@@ -4,19 +4,20 @@ import java.util.List;
 public class CarDealer {
     private static final int limiterCarForShop = 5;
     private static final int limiterCarForSell = 10;
-    Manufacturer manufacturer = new Manufacturer(this);
+    final Manufacturer manufacturer = new Manufacturer(this);
     List<Car> listCars = new ArrayList<>();
 
 
     public void sellCar() {
-        while (CounterCar.getInstance().getNum() < limiterCarForSell) {
+        synchronized (manufacturer) {
+            while (CounterCar.getInstance().getNum() < limiterCarForSell) {
 
 
-            manufacturer.sellCar();
+                manufacturer.sellCar();
+            }
+
         }
-
     }
-
 
     public void acceptCar() {
         while (listCars.size() <= limiterCarForShop) {
